@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Implementation-Title: CodeMirror
+Implementation-Version: 0.9.2
+Vaadin-Package-Version: 1
+Vaadin-Widgetsets: org.vaadin.codemirror.CodemirrorWidgetset
+Class-Path: 
+

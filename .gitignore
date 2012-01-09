@@ -1,0 +1,4 @@
+/build/
+/.settings/
+/WebContent/VAADIN/widgetsets/*
+/WebContent/WEB-INF/lib/*
