@@ -2,6 +2,7 @@ package org.vaadin.codemirror2.client.ui;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.user.client.DOM;
 
 public class CodeMirrorOptionsJSNI extends JavaScriptObject {
 
@@ -15,22 +16,68 @@ public class CodeMirrorOptionsJSNI extends JavaScriptObject {
 
   protected CodeMirrorOptionsJSNI() {}
 
-  public final native void setInitCallback(Runnable cb) /*-{
-        this.initCallback = function() {
-                cb.@java.lang.Runnable::run()();
-        };
+  public final native void setValue(String value) /*-{
+  	this.value = value;
   }-*/;
 
-  public final native void setFocusCallback(Runnable cb) /*-{
-        this.focusCallback = function() {
-                cb.@java.lang.Runnable::run()();
-        };
+  public final native void setMode(String mode) /*-{
+  	this.mode = mode;
   }-*/;
 
-  public final native void setClickCallback(Runnable cb) /*-{
-        this.clickCallback = function() {
-                cb.@java.lang.Runnable::run()();
-        };
+  public final native void setMode(JavaScriptObject mode) /*-{
+  	this.mode = mode;
+  }-*/;
+
+  public final native void setIndentUnit(int unit) /*-{
+  	this.indentUnit = unit;
+  }-*/;
+
+  public final native void setSmartIndent(boolean smart) /*-{
+  	this.smartIndent = smart;
+  }-*/;
+
+  public final native void setTabSize(int size) /*-{
+	  this.tabSize = size;
+  }-*/;
+
+  public final native void setIndentWithTabs(boolean indentWithTabs) /*-{
+  	this.indentWithTabs = indentWithTabs;
+  }-*/;
+
+  public final native void setElectricChars(boolean electricChars) /*-{
+  	this.electricChars = electricChars;
+  }-*/;
+
+  public final native void setKeyMap(String keyMap) /*-{
+  	this.keyMap = keyMap;
+  }-*/;
+
+  public final native void setExtraKeys(JavaScriptObject extraKeys) /*-{
+  	this.extraKeys = extraKeys;
+  }-*/;
+
+  public final native void setLineWrapping(boolean lineWrapping) /*-{
+  	this.lineWrapping = lineWrapping;
+  }-*/;
+
+  public final native void setLineNumbers(boolean lineNumbers) /*-{
+    this.lineNumbers = lineNumbers;
+  }-*/;
+
+  public final native void setFirstLineNumber(int firstLineNumber) /*-{
+  	this.firstLineNumber = firstLineNumber;
+  }-*/;
+
+  public final native void setGutter(boolean gutter) /*-{
+  	this.gutter = gutter;
+  }-*/;
+
+  public final native void setFixedGutter(boolean fixedGutter) /*-{
+  	this.fixedGutter = fixedGutter;
+  }-*/;
+
+  public final native void setReadOnly(boolean readOnly) /*-{
+        this.readOnly = readOnly;
   }-*/;
 
   public final native void setChangeCallback(Runnable cb) /*-{
@@ -39,122 +86,80 @@ public class CodeMirrorOptionsJSNI extends JavaScriptObject {
         };
   }-*/;
 
-  public final native void setControlCallback(Runnable cb) /*-{
-        this.controlFunction = function(i) {
+  public final native void setCursorActivityCallback(Runnable cb) /*-{
+        this.onCursorActivity = function() {
                 cb.@java.lang.Runnable::run()();
         };
   }-*/;
 
-  public final native void setStylesheet(JsArrayString stylesheet) /*-{
-        this.stylesheet = stylesheet;
-  }-*/;
-
-  public final native void setPath(String path) /*-{
-        this.path = path;
-  }-*/;
-
-  public final native void setParserFile(JsArrayString parserFile) /*-{
-        this.parserfile = parserFile;
-  }-*/;
-
-  public final native void setBaseFiles(JsArrayString baseFiles) /*-{
-        this.basefiles = baseFiles;
-  }-*/;
-
-  public final native void setIFrameClass(String iframeClass) /*-{
-        this.iframeClass = iframeClass;
-  }-*/;
-
-  public final native void setPassDelay(int passDelay) /*-{
-        this.passDelay = passDelay;
-  }-*/;
-
-  public final native void setPassTime(int passTime) /*-{
-        this.passTime = passTime;
-  }-*/;
-
-  public final native void setLineNumberDelay(int lineNumberDelay) /*-{
-        this.lineNumberDelay = lineNumberDelay;
-  }-*/;
-
-  public final native void setLineNumberTime(int lineNumberTime) /*-{
-        this.lineNumberTime = lineNumberTime;
-  }-*/;
-
-  public final native void setContinuousScanning(String continuousScanning) /*-{
-        this.continuousScanning = continuousScanning;
-  }-*/;
-
-  public final native void setSaveFunction(Runnable saveFunction) /*-{
-        this.saveFunction = function() {
-                saveFunction.@java.lang.Runnable::run()();
+  public final native void setGutterClickCallback(Runnable cb) /*-{
+        this.onGutterClick = function() {
+                cb.@java.lang.Runnable::run()();
         };
+  }-*/;
+
+  public final native void setFocusCallback(Runnable cb) /*-{
+        this.onFocus = function() {
+                cb.@java.lang.Runnable::run()();
+        };
+  }-*/;
+
+  public final native void setBlurCallback(Runnable cb) /*-{
+        this.onBlur = function() {
+                cb.@java.lang.Runnable::run()();
+        };
+  }-*/;
+
+  public final native void setScrollCallback(Runnable cb) /*-{
+        this.onScroll = function() {
+                cb.@java.lang.Runnable::run()();
+        };
+  }-*/;
+
+  public final native void setHighlightCompleteCallback(Runnable cb) /*-{
+        this.onHighlightComplete = function() {
+                cb.@java.lang.Runnable::run()();
+        };
+  }-*/;
+
+  public final native void setUpdateCallback(Runnable cb) /*-{
+        this.onUpdate = function() {
+                cb.@java.lang.Runnable::run()();
+        };
+  }-*/;
+
+  public final native void setMatchBrackets(boolean matchBrackets) /*-{
+  	this.matchBrackets = matchBrackets;
+  }-*/;
+
+  public final native void setWorkTime(int workTime) /*-{
+  	this.workTime = workTime;
+  }-*/;
+
+  public final native void setWorkDelay(int workDelay) /*-{
+  	this.workDelay = workDelay;
+  }-*/;
+
+  public final native void setPollInterval(int pollInterval) /*-{
+  	this.pollInterval = pollInterval;
   }-*/;
 
   public final native void setUndoDepth(int undoDepth) /*-{
-        this.undoDepth = undoDepth;
+  	this.undoDepth = undoDepth;
   }-*/;
 
-  public final native void setUndoDelay(int undoDelay) /*-{
-        this.undoDelay = undoDelay;
+  public final native void setTabindex(int tabindex) /*-{
+  	this.tabindex = tabindex;
   }-*/;
 
-  public final native void setDisableSpellcheck(boolean disableSpellcheck) /*-{
-        this.disableSpellcheck = disableSpellcheck;
+  public final native void setDocument(DOM document) /*-{
+  	this.document = document;
   }-*/;
 
-  public final native void setTextWrapping(boolean textWrapping) /*-{
-        this.textWrapping = textWrapping;
-  }-*/;
-
-  public final native void setReadOnly(boolean readOnly) /*-{
-        this.readOnly = readOnly;
-  }-*/;
-
-  public final native void setWidth(String width) /*-{
-        this.width = width;
-  }-*/;
-
-  public final native void setHeight(String height) /*-{
-        this.height = height;
-  }-*/;
-
-  public final native void setAutoMatchParens(boolean autoMatchParens) /*-{
-        this.autoMatchParens = autoMatchParens;
-  }-*/;
-
-  public final native void setParserConfig(JavaScriptObject parserConfig) /*-{
-        this.parserConfig = parserConfig;
-  }-*/;
-
-  public final native void setTabMode(String tabMode) /*-{
-        this.tabMode = tabMode;
-  }-*/;
-
-  public final native void setReindentOnLoad(boolean reindentOnLoad) /*-{
-        this.reindentOnLoad = reindentOnLoad;
-  }-*/;
-
-  public final native void setActiveTokens(JavaScriptObject activeTokens) /*-{
-        this.activeTokens = activeTokens;
-  }-*/;
-
-  public final native void setCursorActivity(Runnable cursorActivity) /*-{
-        this.cursorActivity = function() {
-                cursorActivity.@java.lang.Runnable::run()();
+  public final native void setKeyEventCallback(Runnable cb) /*-{
+        this.onKeyEvent = function() {
+                cb.@java.lang.Runnable::run()();
         };
-  }-*/;
-
-  public final native void setLineNumbers(boolean lineNumbers) /*-{
-        this.lineNumbers = lineNumbers;
-  }-*/;
-
-  public final native void setIndentUnit(int indentUnit) /*-{
-        this.indentUnit = indentUnit;
-  }-*/;
-
-  public final native void setContent(String content) /*-{
-        this.content = content;
   }-*/;
 
 }

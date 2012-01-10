@@ -2,23 +2,23 @@ package org.vaadin.codemirror2.client.ui;
 
 public enum CodeStyle {
 
-    TEXT(1, "'mode/rst/rst.js'", "lib/codemirror.css"),
-    XML(2, "'mode/xml/xml.js'", "lib/codemirror.css"),
-    JAVA(3, "'mode/clike/clike.js'", "lib/codemirror.css"),
-    JAVASCRIPT(4, "'mode/javascript/javascript.js'", "lib/codemirror.css"),
-    CSS(5, "'mode/css/css.js'", "lib/codemirror.css"),
-    SQL(6, "'mode/plsql/plsql.js'", "lib/codemirror.css"),
-    PHP(7, "'mode/php/php.js'", "lib/codemirror.css"),
-    PYTHON(8, "'mode/python/python.js'", "lib/codemirror.css"),
-    LUA(9, "'mode/lua/lua.js'", "lib/codemirror.css");
+    TEXT(1, "rst", "lib/codemirror.css"),
+    XML(2, "'xml", "lib/codemirror.css"),
+    JAVA(3, "clike", "lib/codemirror.css"),
+    JAVASCRIPT(4, "javascript", "lib/codemirror.css"),
+    CSS(5, "css", "lib/codemirror.css"),
+    SQL(6, "plsql", "lib/codemirror.css"),
+    PHP(7, "php", "lib/codemirror.css"),
+    PYTHON(8, "python", "lib/codemirror.css"),
+    LUA(9, "lua", "lib/codemirror.css");
 
-    private String parser;
+    private String mode;
     private String css;
     private int id;
 
     CodeStyle(int id, String parser, String css) {
         this.id = id;
-        setParser(parser);
+        setMode(parser);
         setCss(css);
     }
 
@@ -31,12 +31,12 @@ public enum CodeStyle {
         return null;
     }
 
-    private void setParser(String parser) {
-        this.parser = parser;
+    private void setMode(String parser) {
+        this.mode = parser;
     }
 
-    public String getParser() {
-        return parser;
+    public String getMode() {
+        return mode;
     }
 
     private void setCss(String css) {

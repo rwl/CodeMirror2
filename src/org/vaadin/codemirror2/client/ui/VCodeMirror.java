@@ -2,6 +2,9 @@ package org.vaadin.codemirror2.client.ui;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Node;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 import com.vaadin.terminal.gwt.client.ui.VTextArea;
@@ -25,9 +28,9 @@ public class VCodeMirror extends VTextArea {
 
     private CodeMirrorOptionsJSNI options;
 
-    private Util util = new Util("CodeMirror");
+    private Util util = new Util("CodeMirror2");
 
-    private boolean initialized;
+//    private boolean initialized;
 
     private boolean preventUpdate;
 
@@ -70,38 +73,42 @@ public class VCodeMirror extends VTextArea {
         }
         optionsFromUIDL(options, uidl);
         cm = CodeMirrorJSNI.fromTextArea(getElement(), options);
-        cm.init();
         if (util.debug()) {
             util.d("Created: " + util.p(cm));
         }
     }
 
     private void optionsFromUIDL(CodeMirrorOptionsJSNI ops, UIDL uidl) {
-        String path = GWT.getModuleBaseURL();
-        ops.setPath(path);
+//        String path = GWT.getModuleBaseURL();
+//        ops.setPath(path);
+//
+//        JsArrayString css = evalArrayString("['css/docs.css', '"
+//                + codeStyle.getCss() + "']");
+//        for (int i = 0; i < css.length(); i++) {
+//            String c = css.get(i);
+//            if (!c.startsWith("http:") && !c.startsWith("/")) {
+//                c = path + c;
+//            }
+//            css.set(i, c);
+//        }
+//        ops.setParserFile(evalArrayString(codeStyle.getParser()));
+//        ops.setStylesheet(css);
 
-        JsArrayString css = evalArrayString("['css/docs.css', '"
-                + codeStyle.getCss() + "']");
-        for (int i = 0; i < css.length(); i++) {
-            String c = css.get(i);
-            if (!c.startsWith("http:") && !c.startsWith("/")) {
-                c = path + c;
-            }
-            css.set(i, c);
-        }
-        ops.setParserFile(evalArrayString(codeStyle.getParser()));
-        ops.setStylesheet(css);
+    	ops.setMode(codeStyle.getMode());
+
         ops.setLineNumbers(uidl.getBooleanAttribute("showLineNumbers"));
-        int scanTimer = uidl.getIntAttribute("scanTimer");
-        ops.setContinuousScanning(scanTimer <= 0 ? "false" : "" + scanTimer);
-        ops.setWidth(width);
-        ops.setHeight(height);
-        ops.setContent("");; //TODO input prompt?
-        ops.setInitCallback(new Runnable() {
-            public void run() {
-                cmInitComplete();
-            }
-        });
+
+//        int scanTimer = uidl.getIntAttribute("scanTimer");
+//        ops.setContinuousScanning(scanTimer <= 0 ? "false" : "" + scanTimer);
+//        ops.setWidth(width);
+//        ops.setHeight(height);
+//        ops.setContent("");; //TODO input prompt?
+
+//        ops.setInitCallback(new Runnable() {
+//            public void run() {
+//                cmInitComplete();
+//            }
+//        });
 
         ops.setChangeCallback(new Runnable() {
             public void run() {
@@ -115,24 +122,24 @@ public class VCodeMirror extends VTextArea {
 
     }
 
-    protected void cmInitComplete() {
-        initialized = cm != null && cm.isInitialized();
-        if (initialized) {
-            util.d("Init complete.");
-            cmUpdateCodeMirror();
-        }
-    }
+//    protected void cmInitComplete() {
+//        initialized = cm != null && cm.isInitialized();
+//        if (initialized) {
+//            util.d("Init complete.");
+//            cmUpdateCodeMirror();
+//        }
+//    }
 
     private void cmUpdateCodeMirror() {
         preventUpdate = true;
         try {
-            if (cm != null && initialized) {
+            if (cm != null) {
                 String t = super.getText();
                 if (util.debug()) {
                     util.d("updateTextArea " + t);
                 }
                 try {
-                    cm.setCode(t);
+                    cm.setValue(t);
                 } catch (Exception e) {
                     util.d("updateTextArea failed: " + e);
                 }
@@ -143,7 +150,7 @@ public class VCodeMirror extends VTextArea {
     }
 
     private void cmUpdateTextArea() {
-        String t = cm.getCode();
+        String t = cm.getValue();
         if (util.debug()) {
             util.d("updateTextArea " + t);
         }
@@ -156,11 +163,15 @@ public class VCodeMirror extends VTextArea {
     }
 
     private native static JsArrayString evalArrayString(String arrayStr) /*-{
-                                                                         return eval(arrayStr);
-                                                                         }-*/;
+      return eval(arrayStr);
+    }-*/;
 
     public void setCodeStyle(CodeStyle codeStyle) {
         this.codeStyle = codeStyle;
+    }
+
+    public CodeStyle getCodeStyle() {
+        return codeStyle;
     }
 
     private void removeCodeMirror() {
@@ -174,10 +185,6 @@ public class VCodeMirror extends VTextArea {
         }
     }
 
-    public CodeStyle getCodeStyle() {
-        return codeStyle;
-    }
-
     @Override
     public void setText(String text) {
         if (util.debug()) {
@@ -189,8 +196,8 @@ public class VCodeMirror extends VTextArea {
 
     @Override
     public String getText() {
-        if (cm != null && initialized) {
-            return cm.getCode();
+        if (cm != null) {
+            return cm.getValue();
         }
         return super.getText();
     }
@@ -199,8 +206,10 @@ public class VCodeMirror extends VTextArea {
     public void setHeight(String height) {
         this.height = height;
         super.setHeight(height);
-        if (cm != null && initialized) {
-            cm.setHeight(height);
+        if (cm != null) {
+            Element scroller = cm.getScrollerElement();
+            scroller.setPropertyString("height", height);
+            cm.refresh();
         }
     }
 
@@ -208,8 +217,10 @@ public class VCodeMirror extends VTextArea {
     public void setWidth(String width) {
         this.width = width;
         super.setWidth(width);
-        if (cm != null && initialized) {
-            cm.setWidth(width);
+        if (cm != null) {
+            Element scroller = cm.getScrollerElement();
+            scroller.setPropertyString("width", width);
+            cm.refresh();
         }
     }
 
@@ -220,6 +231,9 @@ public class VCodeMirror extends VTextArea {
      */
     private native void removeCodeMirror(CodeMirrorJSNI cm)
     /*-{
-    if (cm) { cm.frame.parentNode.parentNode.removeChild(cm.frame.parentNode); cm = null; }
+      if (cm) {
+        cm.frame.parentNode.parentNode.removeChild(cm.frame.parentNode);
+        cm = null;
+      }
     }-*/;
 }

@@ -31,16 +31,16 @@ public class CodeMirrorApplication extends Application {
         final CodeMirror code = new CodeMirror("Your Code",
                 CodeStyle.XML);
         code.setValue(SAMPLE_CODE);
-        code.setWidth("400px");
-        code.setHeight("300px");
+//        code.setWidth("400px");
+//        code.setHeight("300px");
         hl.addComponent(code);
         // #
 
         final CodeMirror code2 = new CodeMirror("Your Code Too",
                 CodeStyle.XML);
         code2.setValue(SAMPLE_CODE);
-        code2.setWidth("400px");
-        code2.setHeight("300px");
+//        code2.setWidth("400px");
+//        code2.setHeight("300px");
         hl.addComponent(code2);
 
 
