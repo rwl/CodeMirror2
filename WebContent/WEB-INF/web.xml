@@ -8,7 +8,7 @@
   	<param-value>false</param-value>
   </context-param>
   <servlet>
-  	<servlet-name>Codemirror Application</servlet-name>
+  	<servlet-name>CodeMirror2 Application</servlet-name>
   	<servlet-class>
   	com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
   	<init-param>
@@ -25,7 +25,7 @@
   	</init-param>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>Codemirror Application</servlet-name>
+  	<servlet-name>CodeMirror2 Application</servlet-name>
   	<url-pattern>/*</url-pattern>
   </servlet-mapping>
 </web-app>

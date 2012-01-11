@@ -28,6 +28,10 @@ public class CodeMirrorOptionsJSNI extends JavaScriptObject {
   	this.mode = mode;
   }-*/;
 
+  public final native void setTheme(String theme) /*-{
+  	this.theme = theme;
+  }-*/;
+
   public final native void setIndentUnit(int unit) /*-{
   	this.indentUnit = unit;
   }-*/;
@@ -60,8 +64,8 @@ public class CodeMirrorOptionsJSNI extends JavaScriptObject {
   	this.lineWrapping = lineWrapping;
   }-*/;
 
-  public final native void setLineNumbers(boolean lineNumbers) /*-{
-    this.lineNumbers = lineNumbers;
+  public final native void setLineNumbers(boolean ln) /*-{
+    this.lineNumbers = ln;
   }-*/;
 
   public final native void setFirstLineNumber(int firstLineNumber) /*-{

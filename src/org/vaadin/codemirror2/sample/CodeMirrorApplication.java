@@ -7,6 +7,7 @@ import com.vaadin.Application;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.Window;
@@ -24,7 +25,7 @@ public class CodeMirrorApplication extends Application {
     public void init() {
         Window mainWindow = new Window("CodeMirror Sample Application");
 
-        GridLayout hl = new GridLayout(2,3);
+        GridLayout hl = new GridLayout(2,4);
         hl.setSpacing(true);
         mainWindow.addComponent(hl);
         // # 1
@@ -34,8 +35,8 @@ public class CodeMirrorApplication extends Application {
 //        code.setWidth("400px");
 //        code.setHeight("300px");
         hl.addComponent(code);
-        // #
 
+        // # 2
         final CodeMirror code2 = new CodeMirror("Your Code Too",
                 CodeStyle.XML);
         code2.setValue(SAMPLE_CODE);
@@ -101,6 +102,29 @@ public class CodeMirrorApplication extends Application {
                 code.setValue(code2.getValue());
             }
         }));
+
+        CheckBox cb;
+        cb = new CheckBox("Show line numbers", new Button.ClickListener() {
+
+            private static final long serialVersionUID = 1L;
+
+            public void buttonClick(ClickEvent event) {
+                code.setShowLineNumbers(event.getButton().booleanValue());
+            }
+        });
+        cb.setImmediate(true);
+        hl.addComponent(cb);
+
+        cb = new CheckBox("Show line numbers", new Button.ClickListener() {
+
+            private static final long serialVersionUID = 1L;
+
+            public void buttonClick(ClickEvent event) {
+                code2.setShowLineNumbers(event.getButton().booleanValue());
+            }
+        });
+        cb.setImmediate(true);
+        hl.addComponent(cb);
 
         setMainWindow(mainWindow);
     }

@@ -30,7 +30,8 @@ public class CodeMirror extends TextField {
     @Override
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
-        target.addAttribute("codestyle", getCodeStyle().getId());
+        if (getCodeStyle() != null)
+        	target.addAttribute("codestyle", getCodeStyle().getId());
         target.addAttribute("showLineNumbers", isShowLineNumbers());
     }
 

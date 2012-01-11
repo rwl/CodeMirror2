@@ -17,6 +17,10 @@ public class CodeMirrorJSNI extends JavaScriptObject {
     return $wnd.CodeMirror.fromTextArea(textarea, pars);
   }-*/;
 
+  public native static CodeMirrorJSNI fromTextArea(Element textarea) /*-{
+    return $wnd.CodeMirror.fromTextArea(textarea);
+  }-*/;
+
   public final native String getValue() /*-{
     return this.getValue();
   }-*/;
@@ -38,6 +42,14 @@ public class CodeMirrorJSNI extends JavaScriptObject {
   }-*/;
 
   public final native void setOption(String option, JavaScriptObject value) /*-{
+  	this.setOption(option, value);
+  }-*/;
+
+  public final native void setOption(String option, String value) /*-{
+  	this.setOption(option, value);
+  }-*/;
+
+  public final native void setOption(String option, boolean value) /*-{
   	this.setOption(option, value);
   }-*/;
 

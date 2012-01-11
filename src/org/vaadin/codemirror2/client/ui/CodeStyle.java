@@ -3,7 +3,7 @@ package org.vaadin.codemirror2.client.ui;
 public enum CodeStyle {
 
     TEXT(1, "rst", "lib/codemirror.css"),
-    XML(2, "'xml", "lib/codemirror.css"),
+    XML(2, "xml", "lib/codemirror.css"),
     JAVA(3, "clike", "lib/codemirror.css"),
     JAVASCRIPT(4, "javascript", "lib/codemirror.css"),
     CSS(5, "css", "lib/codemirror.css"),
