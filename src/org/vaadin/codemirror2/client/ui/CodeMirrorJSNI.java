@@ -1,9 +1,7 @@
 package org.vaadin.codemirror2.client.ui;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Node;
+import com.google.gwt.user.client.Element;
 
 public class CodeMirrorJSNI extends JavaScriptObject {
 
@@ -195,7 +193,7 @@ public class CodeMirrorJSNI extends JavaScriptObject {
   	return this.refresh();
   }-*/;
 
-  public final native DivElement getScrollerElement() /*-{
+  public final native Element getScrollerElement() /*-{
   	return this.getScrollerElement();
   }-*/;
 

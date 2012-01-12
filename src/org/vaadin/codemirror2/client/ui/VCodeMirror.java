@@ -1,6 +1,7 @@
 package org.vaadin.codemirror2.client.ui;
 
-import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.DOM;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 import com.vaadin.terminal.gwt.client.ui.VTextArea;
@@ -14,7 +15,11 @@ public class VCodeMirror extends VTextArea {
     /** Set the CSS class name to allow styling. */
     public static final String CLASSNAME = "v-codemirror";
 
-    private CodeStyle codeStyle;
+    private CodeMode codeMode;
+
+    private boolean showLineNumbers;
+
+    private CodeTheme codeTheme;
 
     private String height;
 
@@ -50,24 +55,44 @@ public class VCodeMirror extends VTextArea {
         if (cm == null)
         	initCodeMirror();
 
-        int cs = uidl.getIntAttribute("codestyle");
-        boolean styleChange = codeStyle == null || codeStyle.getId() != cs;
-
-        codeStyle = CodeStyle.byId(cs);
+        // Code mode
+        int cs = uidl.getIntAttribute("codeMode");
+        boolean styleChange = codeMode == null || codeMode.getId() != cs;
 
         if (styleChange) {
-            if (util.debug())
-                util.d("Style change: " + codeStyle.getMode());
+            codeMode = CodeMode.byId(cs);
 
-        	cm.setOption("mode", codeStyle.getMode());
+            if (util.debug())
+                util.d("Style change: " + codeMode.getMode());
+
+        	cm.setOption("mode", codeMode.getMode());
         }
 
+        // Show line numbers
         boolean sln = uidl.getBooleanAttribute("showLineNumbers");
+        boolean showChange = showLineNumbers != sln;
 
-        if (util.debug())
-            util.d("Show line numbers: " + sln);
+        if (showChange) {
+        	showLineNumbers = sln;
 
-        cm.setOption("lineNumbers", sln);
+	        if (util.debug())
+	            util.d("Show line numbers: " + sln);
+
+	        cm.setOption("lineNumbers", sln);
+        }
+
+        // Code theme
+        int ct = uidl.getIntAttribute("codeTheme");
+        boolean themeChange = codeTheme == null || codeTheme.getId() != ct;
+
+        if (themeChange) {
+        	codeTheme = CodeTheme.byId(ct);
+
+        	if (util.debug())
+        		util.d("Theme change: " + codeTheme.getTheme());
+
+        	cm.setOption("theme", codeTheme.getTheme());
+        }
     }
 
     private void initCodeMirror() {
@@ -83,6 +108,12 @@ public class VCodeMirror extends VTextArea {
             util.d("Options: " + util.p(options));
 
         cm = CodeMirrorJSNI.fromTextArea(getElement(), options);
+
+        if (height != null)
+        	setHeight(height);
+
+        if (width != null)
+        	setWidth(width);
 
         if (util.debug())
             util.d("Created: " + util.p(cm));
@@ -143,7 +174,7 @@ public class VCodeMirror extends VTextArea {
         super.setHeight(height);
         if (cm != null) {
             Element scroller = cm.getScrollerElement();
-            scroller.setPropertyString("height", height);
+            DOM.setStyleAttribute(scroller, "height", height);
             cm.refresh();
         }
     }
@@ -154,7 +185,7 @@ public class VCodeMirror extends VTextArea {
         super.setWidth(width);
         if (cm != null) {
             Element scroller = cm.getScrollerElement();
-            scroller.setPropertyString("width", width);
+            DOM.setStyleAttribute(scroller, "width", width);
             cm.refresh();
         }
     }

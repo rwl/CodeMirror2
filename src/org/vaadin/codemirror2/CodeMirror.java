@@ -1,6 +1,7 @@
 package org.vaadin.codemirror2;
 
-import org.vaadin.codemirror2.client.ui.CodeStyle;
+import org.vaadin.codemirror2.client.ui.CodeMode;
+import org.vaadin.codemirror2.client.ui.CodeTheme;
 
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
@@ -14,34 +15,40 @@ public class CodeMirror extends TextField {
 
     private static final long serialVersionUID = -7716639260088636858L;
 
-    private CodeStyle codeStyle;
-    private boolean showLineNumbers;
+    private CodeMode codeMode = CodeMode.TEXT;
+    private boolean showLineNumbers = false;
+    private CodeTheme codeTheme = CodeTheme.DEFAULT;
 
     public CodeMirror(String caption) {
         super(caption);
-        setCodeStyle(CodeStyle.TEXT);
+        setCodeMode(CodeMode.TEXT);
     }
 
-    public CodeMirror(String caption, CodeStyle codeStyle) {
+    public CodeMirror(String caption, CodeMode codeStyle) {
         super(caption);
-        setCodeStyle(codeStyle);
+        setCodeMode(codeStyle);
     }
 
     @Override
     public void paintContent(PaintTarget target) throws PaintException {
         super.paintContent(target);
-        if (getCodeStyle() != null)
-        	target.addAttribute("codestyle", getCodeStyle().getId());
+
+        if (getCodeMode() != null)
+        	target.addAttribute("codeMode", getCodeMode().getId());
+
         target.addAttribute("showLineNumbers", isShowLineNumbers());
+
+        if (getCodeTheme() != null)
+        	target.addAttribute("codeTheme", getCodeTheme().getId());
     }
 
-    public void setCodeStyle(CodeStyle codeStyle) {
-        this.codeStyle = codeStyle;
+    public void setCodeMode(CodeMode codeMode) {
+        this.codeMode = codeMode;
         requestRepaint();
     }
 
-    public CodeStyle getCodeStyle() {
-        return codeStyle;
+    public CodeMode getCodeMode() {
+        return codeMode;
     }
 
     public void setShowLineNumbers(boolean showLineNumbers) {
@@ -52,4 +59,13 @@ public class CodeMirror extends TextField {
     public boolean isShowLineNumbers() {
         return showLineNumbers;
     }
+
+	public void setCodeTheme(CodeTheme codeTheme) {
+		this.codeTheme = codeTheme;
+        requestRepaint();
+	}
+
+	public CodeTheme getCodeTheme() {
+		return codeTheme;
+	}
 }
