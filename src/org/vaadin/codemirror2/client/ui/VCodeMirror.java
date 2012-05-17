@@ -25,7 +25,7 @@ public class VCodeMirror extends VTextArea {
 
     private String width;
 
-    private CodeMirrorJSNI cm;
+    protected CodeMirrorJSNI codeMirrorJSNI;
 
     private Util util = new Util("CodeMirror2");
 
@@ -52,7 +52,7 @@ public class VCodeMirror extends VTextArea {
         util.setId(uidl.getId());
         util.setImmediate(uidl.getBooleanAttribute("immediate"));
 
-        if (cm == null)
+        if (codeMirrorJSNI == null)
         	initCodeMirror();
 
         // Code mode
@@ -65,7 +65,7 @@ public class VCodeMirror extends VTextArea {
             if (util.debug())
                 util.d("Style change: " + codeMode.getMode());
 
-        	cm.setOption("mode", codeMode.getMode());
+        	codeMirrorJSNI.setOption("mode", codeMode.getMode());
         }
 
         // Show line numbers
@@ -78,7 +78,7 @@ public class VCodeMirror extends VTextArea {
 	        if (util.debug())
 	            util.d("Show line numbers: " + sln);
 
-	        cm.setOption("lineNumbers", sln);
+	        codeMirrorJSNI.setOption("lineNumbers", sln);
         }
 
         // Code theme
@@ -91,7 +91,7 @@ public class VCodeMirror extends VTextArea {
         	if (util.debug())
         		util.d("Theme change: " + codeTheme.getTheme());
 
-        	cm.setOption("theme", codeTheme.getTheme());
+        	codeMirrorJSNI.setOption("theme", codeTheme.getTheme());
         }
     }
 
@@ -107,7 +107,7 @@ public class VCodeMirror extends VTextArea {
         if (util.debug())
             util.d("Options: " + util.p(options));
 
-        cm = CodeMirrorJSNI.fromTextArea(getElement(), options);
+        codeMirrorJSNI = CodeMirrorJSNI.fromTextArea(getElement(), options);
 
         if (height != null)
         	setHeight(height);
@@ -116,19 +116,19 @@ public class VCodeMirror extends VTextArea {
         	setWidth(width);
 
         if (util.debug())
-            util.d("Created: " + util.p(cm));
+            util.d("Created: " + util.p(codeMirrorJSNI));
     }
 
     private void cmUpdateCodeMirror() {
         preventUpdate = true;
         try {
-            if (cm != null) {
+            if (codeMirrorJSNI != null) {
                 String t = super.getText();
                 if (util.debug())
                     util.d("updateTextArea " + t);
 
                 try {
-                    cm.setValue(t);
+                    codeMirrorJSNI.setValue(t);
                 } catch (Exception e) {
                     util.d("updateTextArea failed: " + e);
                 }
@@ -139,7 +139,7 @@ public class VCodeMirror extends VTextArea {
     }
 
     private void cmUpdateTextArea() {
-        String t = cm.getValue();
+        String t = codeMirrorJSNI.getValue();
         if (util.debug())
             util.d("updateTextArea " + t);
 
@@ -162,8 +162,8 @@ public class VCodeMirror extends VTextArea {
 
     @Override
     public String getText() {
-        if (cm != null)
-            return cm.getValue();
+        if (codeMirrorJSNI != null)
+            return codeMirrorJSNI.getValue();
 
         return super.getText();
     }
@@ -172,10 +172,10 @@ public class VCodeMirror extends VTextArea {
     public void setHeight(String height) {
         this.height = height;
         super.setHeight(height);
-        if (cm != null) {
-            Element scroller = cm.getScrollerElement();
+        if (codeMirrorJSNI != null) {
+            Element scroller = codeMirrorJSNI.getScrollerElement();
             DOM.setStyleAttribute(scroller, "height", height);
-            cm.refresh();
+            codeMirrorJSNI.refresh();
         }
     }
 
@@ -183,10 +183,10 @@ public class VCodeMirror extends VTextArea {
     public void setWidth(String width) {
         this.width = width;
         super.setWidth(width);
-        if (cm != null) {
-            Element scroller = cm.getScrollerElement();
+        if (codeMirrorJSNI != null) {
+            Element scroller = codeMirrorJSNI.getScrollerElement();
             DOM.setStyleAttribute(scroller, "width", width);
-            cm.refresh();
+            codeMirrorJSNI.refresh();
         }
     }
 }
