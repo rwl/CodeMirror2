@@ -33,8 +33,8 @@ public class CodeMirrorApplication extends Application {
         final CodeMirror code = new CodeMirror("Your Code",
                 CodeMode.XML);
         code.setValue(SAMPLE_CODE);
-//        code.setWidth("600px");
-//        code.setHeight("600px");
+        code.setWidth("600px");
+        code.setHeight("600px");
         hl.addComponent(code);
 
         // # 2

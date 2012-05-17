@@ -15,7 +15,7 @@
   		<description>
   		Vaadin application class to start</description>
   		<param-name>application</param-name>
-  		<param-value>org.vaadin.codemirror2.sample.CodeMirrorApp</param-value>
+  		<param-value>org.vaadin.codemirror2.sample.CodeMirrorApplication</param-value>
   	</init-param>
   	<init-param>
   		<description>
