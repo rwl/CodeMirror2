@@ -51,6 +51,10 @@ public class CodeMirrorJSNI extends JavaScriptObject {
   	this.setOption(option, value);
   }-*/;
 
+  public final native void setOption(String option, int value) /*-{
+  	this.setOption(option, value);
+  }-*/;
+
   public final native JavaScriptObject getOption(String option) /*-{
   	return this.getOption(option);
   }-*/;
