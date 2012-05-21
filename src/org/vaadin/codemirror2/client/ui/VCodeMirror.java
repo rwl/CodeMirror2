@@ -15,21 +15,20 @@ public class VCodeMirror extends VTextArea {
     /** Set the CSS class name to allow styling. */
     public static final String CLASSNAME = "v-codemirror";
 
-    private CodeMode codeMode;
+    protected CodeMode codeMode;
+    protected boolean showLineNumbers;
+    protected boolean readOnly;
+    protected boolean noCursor;
+    protected boolean smartIndent;
+    protected int indentUnit;
+    protected int tabSize;
+    protected CodeTheme codeTheme;
 
-    private boolean showLineNumbers;
-
-    private CodeTheme codeTheme;
-
-    private String height;
-
-    private String width;
-
+    protected String height;
+    protected String width;
     protected CodeMirrorJSNI codeMirrorJSNI;
-
-    private Util util = new Util("CodeMirror2");
-
-    private boolean preventUpdate;
+    protected Util util = new Util("CodeMirror2");
+    protected boolean preventUpdate;
 
     /**
      * The constructor should first call super() to initialize the component
@@ -92,6 +91,55 @@ public class VCodeMirror extends VTextArea {
         		util.d("Theme change: " + codeTheme.getTheme());
 
         	codeMirrorJSNI.setOption("theme", codeTheme.getTheme());
+        }
+
+        // Read only & noCursor
+        boolean ro = uidl.getBooleanAttribute("readOnly");
+        boolean nc = uidl.getBooleanAttribute("noCursor");
+        boolean roChanged = ro != readOnly || nc != noCursor;
+
+        if (roChanged) {
+            readOnly = ro;
+            noCursor = nc;
+
+            if (util.debug()) {
+                util.d("ReadOnly: " + readOnly);
+                util.d("NoCursor readOnly: " + noCursor);
+    }
+
+            if (noCursor)
+                codeMirrorJSNI.setOption("readOnly", "nocursor");
+            else
+                codeMirrorJSNI.setOption("readOnly", readOnly);
+        }
+
+        // Smart indent
+        boolean si = uidl.getBooleanAttribute("smartIndent");
+        boolean siChanged = si != smartIndent;
+
+        if (siChanged) {
+            smartIndent = si;
+
+            if (util.debug()) {
+                util.d("Smart indent: " + smartIndent);
+            }
+            codeMirrorJSNI.setOption("smartIndent", smartIndent);
+        }
+
+        //Indent unit & tab size
+        int iu = uidl.getIntAttribute("indentUnit");
+        int ts = uidl.getIntAttribute("tabSize");
+        boolean indentsChanged = iu != indentUnit || ts != tabSize;
+        if (indentsChanged) {
+            indentUnit = iu;
+            tabSize = ts;
+
+            if (util.debug()) {
+                util.d("Indent size: " + indentUnit);
+                util.d("Tab size: " + tabSize);
+            }
+            codeMirrorJSNI.setOption("indentUnit", indentUnit);
+            codeMirrorJSNI.setOption("tabSize", tabSize);
         }
     }
 

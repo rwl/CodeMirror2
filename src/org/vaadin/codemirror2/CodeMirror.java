@@ -15,9 +15,14 @@ public class CodeMirror extends TextField {
 
     private static final long serialVersionUID = -7716639260088636858L;
 
-    private CodeMode codeMode = CodeMode.TEXT;
-    private boolean showLineNumbers = false;
-    private CodeTheme codeTheme = CodeTheme.DEFAULT;
+    protected CodeMode codeMode = CodeMode.TEXT;
+    protected CodeTheme codeTheme = CodeTheme.DEFAULT;
+    protected boolean showLineNumbers = false;
+    protected boolean readOnly = false;
+    protected boolean noCursor = false;
+    protected boolean smartIndent = true;
+    protected int indentUnit = 2;
+    protected int tabSize = 4;
 
     public CodeMirror(String caption) {
         super(caption);
@@ -40,6 +45,12 @@ public class CodeMirror extends TextField {
 
         if (getCodeTheme() != null)
         	target.addAttribute("codeTheme", getCodeTheme().getId());
+
+        target.addAttribute("readOnly", readOnly);
+        target.addAttribute("noCursor", noCursor);
+        target.addAttribute("smartIndent", smartIndent);
+        target.addAttribute("indentUnit", indentUnit);
+        target.addAttribute("tabSize", tabSize);
     }
 
     public void setCodeMode(CodeMode codeMode) {
@@ -67,5 +78,45 @@ public class CodeMirror extends TextField {
 
 	public CodeTheme getCodeTheme() {
 		return codeTheme;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
+    public boolean isNocursor() {
+        return noCursor;
+    }
+
+    public void setNocursor(boolean noCursor) {
+        this.noCursor = noCursor;
+    }
+
+    public boolean isSmartIndent() {
+        return smartIndent;
+    }
+
+    public void setSmartIndent(boolean smartIndent) {
+        this.smartIndent = smartIndent;
+    }
+
+    public int getIndentUnit() {
+        return indentUnit;
+    }
+
+    public void setIndentUnit(int indentUnit) {
+        this.indentUnit = indentUnit;
+    }
+
+    public int getTabSize() {
+        return tabSize;
+    }
+
+    public void setTabSize(int tabSize) {
+        this.tabSize = tabSize;
 	}
 }
