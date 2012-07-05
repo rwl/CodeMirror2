@@ -1,10 +1,11 @@
 package org.vaadin.codemirror2.client.ui;
 
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.UIDL;
 import com.vaadin.terminal.gwt.client.ui.VTextArea;
+import org.vaadin.codemirror2.client.common.JsCursorLocation;
 
 /**
  * CodeMirror client side integration widget.
@@ -20,8 +21,13 @@ public class VCodeMirror extends VTextArea {
     protected boolean readOnly;
     protected boolean noCursor;
     protected boolean smartIndent;
+    protected boolean focus;
+    protected boolean autofocus;
     protected int indentUnit;
     protected int tabSize;
+    protected int cursorPosLine;
+    protected int cursorPosChar;
+
     protected CodeTheme codeTheme;
 
     protected String height;
@@ -52,7 +58,7 @@ public class VCodeMirror extends VTextArea {
         util.setImmediate(uidl.getBooleanAttribute("immediate"));
 
         if (codeMirrorJSNI == null)
-        	initCodeMirror();
+            initCodeMirror();
 
         // Code mode
         int cs = uidl.getIntAttribute("codeMode");
@@ -64,7 +70,7 @@ public class VCodeMirror extends VTextArea {
             if (util.debug())
                 util.d("Style change: " + codeMode.getMode());
 
-        	codeMirrorJSNI.setOption("mode", codeMode.getMode());
+            codeMirrorJSNI.setOption("mode", codeMode.getMode());
         }
 
         // Show line numbers
@@ -72,12 +78,12 @@ public class VCodeMirror extends VTextArea {
         boolean showChange = showLineNumbers != sln;
 
         if (showChange) {
-        	showLineNumbers = sln;
+            showLineNumbers = sln;
 
-	        if (util.debug())
-	            util.d("Show line numbers: " + sln);
+            if (util.debug())
+                util.d("Show line numbers: " + sln);
 
-	        codeMirrorJSNI.setOption("lineNumbers", sln);
+            codeMirrorJSNI.setOption("lineNumbers", sln);
         }
 
         // Code theme
@@ -85,12 +91,12 @@ public class VCodeMirror extends VTextArea {
         boolean themeChange = codeTheme == null || codeTheme.getId() != ct;
 
         if (themeChange) {
-        	codeTheme = CodeTheme.byId(ct);
+            codeTheme = CodeTheme.byId(ct);
 
-        	if (util.debug())
-        		util.d("Theme change: " + codeTheme.getTheme());
+            if (util.debug())
+                util.d("Theme change: " + codeTheme.getTheme());
 
-        	codeMirrorJSNI.setOption("theme", codeTheme.getTheme());
+            codeMirrorJSNI.setOption("theme", codeTheme.getTheme());
         }
 
         // Read only & noCursor
@@ -141,10 +147,49 @@ public class VCodeMirror extends VTextArea {
             codeMirrorJSNI.setOption("indentUnit", indentUnit);
             codeMirrorJSNI.setOption("tabSize", tabSize);
         }
+
+        //Cursor position
+
+        int cursorLine = uidl.getIntAttribute("cursorPosLine");
+        int cursorChar = uidl.getIntAttribute("cursorPosChar");
+        if (util.debug()) {
+            util.d("Cursor position line: " + cursorLine);
+            util.d("Cursor position char: " + cursorChar);
+        }
+        JsCursorLocation location = JsCursorLocation.create(cursorLine, cursorChar);
+        codeMirrorJSNI.setCursor(location);
+
+        if (util.debug()) {
+            util.d("Trying to autofocus");
+        }
+        //Autofocus
+        boolean af = uidl.getBooleanAttribute("autofocus");
+        if (af != autofocus) {
+            autofocus = af;
+            if (util.debug()) {
+                util.d("Autofocus: " + autofocus);
+            }
+
+            codeMirrorJSNI.setOption("autofocus", autofocus);
+        }
+
+        if (util.debug()) {
+            util.d("Trying to focus");
+        }
+        boolean fc = uidl.getBooleanAttribute("focus");
+        if (fc != focus) {
+            focus = fc;
+            if (util.debug()) {
+                util.d("Focus: " + focus);
+            }
+
+            codeMirrorJSNI.setOption("focus", focus);
+            codeMirrorJSNI.focus();
+        }
     }
 
     private void initCodeMirror() {
-    	CodeMirrorOptionsJSNI options = CodeMirrorOptionsJSNI.newInstance();
+        CodeMirrorOptionsJSNI options = CodeMirrorOptionsJSNI.newInstance();
 
         options.setChangeCallback(new Runnable() {
             public void run() {
@@ -158,10 +203,10 @@ public class VCodeMirror extends VTextArea {
         codeMirrorJSNI = CodeMirrorJSNI.fromTextArea(getElement(), options);
 
         if (height != null)
-        	setHeight(height);
+            setHeight(height);
 
         if (width != null)
-        	setWidth(width);
+            setWidth(width);
 
         if (util.debug())
             util.d("Created: " + util.p(codeMirrorJSNI));
@@ -235,6 +280,21 @@ public class VCodeMirror extends VTextArea {
             Element scroller = codeMirrorJSNI.getScrollerElement();
             DOM.setStyleAttribute(scroller, "width", width);
             codeMirrorJSNI.refresh();
+        }
+    }
+
+    @Override
+    public void setCursorPos(int pos) {
+        if (codeMirrorJSNI != null) {
+            codeMirrorJSNI.setCursor(JsCursorLocation.create(pos, 0));
+            codeMirrorJSNI.refresh();
+        }
+    }
+
+    @Override
+    public void setFocus(boolean focused) {
+        if (focused && codeMirrorJSNI != null) {
+            codeMirrorJSNI.focus();
         }
     }
 }
