@@ -21,8 +21,12 @@ public class CodeMirror extends TextField {
     protected boolean readOnly = false;
     protected boolean noCursor = false;
     protected boolean smartIndent = true;
+    protected boolean focus = false;
+    protected boolean autofocus = false;
     protected int indentUnit = 2;
     protected int tabSize = 4;
+    protected int cursorPosLine;
+    protected int cursorPosChar;
 
     public CodeMirror(String caption) {
         super(caption);
@@ -39,18 +43,22 @@ public class CodeMirror extends TextField {
         super.paintContent(target);
 
         if (getCodeMode() != null)
-        	target.addAttribute("codeMode", getCodeMode().getId());
+            target.addAttribute("codeMode", getCodeMode().getId());
 
         target.addAttribute("showLineNumbers", isShowLineNumbers());
 
         if (getCodeTheme() != null)
-        	target.addAttribute("codeTheme", getCodeTheme().getId());
+            target.addAttribute("codeTheme", getCodeTheme().getId());
 
         target.addAttribute("readOnly", readOnly);
         target.addAttribute("noCursor", noCursor);
+        target.addAttribute("autofocus", autofocus);
+        target.addAttribute("focus", focus);
         target.addAttribute("smartIndent", smartIndent);
         target.addAttribute("indentUnit", indentUnit);
         target.addAttribute("tabSize", tabSize);
+        target.addAttribute("cursorPosLine", cursorPosLine);
+        target.addAttribute("cursorPosChar", cursorPosChar);
     }
 
     public void setCodeMode(CodeMode codeMode) {
@@ -71,13 +79,13 @@ public class CodeMirror extends TextField {
         return showLineNumbers;
     }
 
-	public void setCodeTheme(CodeTheme codeTheme) {
-		this.codeTheme = codeTheme;
+    public void setCodeTheme(CodeTheme codeTheme) {
+        this.codeTheme = codeTheme;
         requestRepaint();
-	}
+    }
 
-	public CodeTheme getCodeTheme() {
-		return codeTheme;
+    public CodeTheme getCodeTheme() {
+        return codeTheme;
     }
 
     public boolean isReadOnly() {
@@ -118,5 +126,38 @@ public class CodeMirror extends TextField {
 
     public void setTabSize(int tabSize) {
         this.tabSize = tabSize;
-	}
+    }
+
+    public void setCursorPosition(int line, int ch) {
+        this.cursorPosLine = line;
+        this.cursorPosChar = ch;
+        requestRepaint();
+    }
+
+    @Override
+    public void setCursorPosition(int pos) {
+        throw new UnsupportedOperationException("Unsupported. Use setCursorPosition(int line, int ch) instead");
+    }
+
+    public int getCursorPositionLine() {
+        return cursorPosLine;
+    }
+
+    public int getCursorPosChar() {
+        return cursorPosChar;
+    }
+
+    public boolean isAutofocus() {
+        return autofocus;
+    }
+
+    public void setAutofocus(boolean autofocus) {
+        this.autofocus = autofocus;
+    }
+
+    @Override
+    public void focus() {
+        super.focus();
+        this.focus = true;
+    }
 }
