@@ -41,8 +41,8 @@ public class CodeMirrorApplication extends Application {
         final CodeMirror code2 = new CodeMirror("Your Code Too",
                 CodeMode.XML);
         code2.setValue(SAMPLE_CODE);
-//        code2.setWidth("400px");
-//        code2.setHeight("300px");
+        code2.setWidth("500px");
+        code2.setHeight("500px");
         hl.addComponent(code2);
 
 
